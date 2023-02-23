@@ -7,13 +7,13 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input = forwardRef<HTMLInputElement, Props>((props, inputRef) => {
-  const { id, className, children, onChange, ...rest } = props;
+  const { name, className, children, onChange, ...rest } = props;
 
   return (
     <label>
       <input
         ref={inputRef}
-        data-id={id}
+        data-name={name}
         className={className}
         onChange={onChange}
         autoComplete="off"
