@@ -1,0 +1,21 @@
+.root {
+  width: 100%;
+  padding: 10px;
+  background-color: #1974e4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.disabled,
+.disabled:hover {
+  filter: grayscale(1);
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000;
+  -webkit-backface-visibility: hidden;
+  cursor: text;
+}
+
+.progress {
+}
