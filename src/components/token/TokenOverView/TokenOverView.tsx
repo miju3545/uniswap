@@ -1,72 +1,74 @@
-import React, { FC, useState, useCallback, useEffect, SyntheticEvent } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import s from './TokenOverView.module.css';
 import { useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
-import useSwitchableInputs from '@lib/hooks/useSwitchableInputs';
-import SwapCurrencyInput from '../SwapCurrencyInput';
 import useGetDetailsOfTokensByIds from '@lib/hooks/useGetDetailsOfTokensByIds';
 import { useToken } from '../context';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { MdOutlineArrowDownward } from 'react-icons/md';
 import { SlInfo } from 'react-icons/sl';
 import useCurrencies, { calculateCurrency } from '@lib/hooks/useCurrencies';
+import { useForm } from 'react-hook-form';
+
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Input } from '@components/ui';
+
+export type FormValues = {
+  from: string | number;
+  into: string | number;
+};
+
+const trimDigit = (digit: number) => digit.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
 const TokenOverView: FC = () => {
-  // input
-  const { from, into, onSwitch, onReset } = useSwitchableInputs();
-  // modal ui
+  const schema = yup.object({
+    from: yup
+      .number()
+      // .matches(/^\d*.?\d{0,2}$/)
+      .required(''),
+    into: yup
+      .number()
+      // .matches(/^\d*.?\d{0,2}$/)
+      .required(''),
+  });
+
+  const { control, handleSubmit, setFocus, setValue, watch } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+    defaultValues: { from: 0, into: 0 },
+  });
+
   const { openModal } = useUI();
-  // activating button
   const [disabled, setDisabled] = useState(true);
-  // kinds-of-token
+
   const { fromToken, intoToken } = useToken();
-  // usd-prices of each token
-  const [fromTokenDetail, intoTokenDetail] = useGetDetailsOfTokensByIds(fromToken.id, intoToken.id);
+  const [fromDetail, intoDetail] = useGetDetailsOfTokensByIds(fromToken.id, intoToken.id);
 
-  const fromTokenPrice = fromTokenDetail?.data?.[fromToken.id]?.usd || 0;
-  const intoTokenPrice = intoTokenDetail?.data?.[intoToken.id]?.usd || 0;
+  const fromPrice = fromDetail?.data?.[fromToken.id]?.usd || 0;
+  const intoPrice = intoDetail?.data?.[intoToken.id]?.usd || 0;
 
+  const [fromAmount, intoAmount] = Object.values(watch()).map((v) => +v);
   const [fromCurrency, intoCurrency] = useCurrencies(
-    { amount: from.value, price: fromTokenPrice },
-    { amount: into.value, price: intoTokenPrice }
+    { amount: fromAmount, price: fromPrice },
+    { amount: intoAmount, price: intoPrice }
   );
 
-  const { result } = calculateCurrency({ amount: (from.value * fromTokenPrice) / intoTokenPrice });
-  console.log(fromTokenPrice, intoTokenPrice, result);
-  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      onReset();
-    } catch ({ errors }: any) {
-    } finally {
-      setDisabled(true);
-    }
-  };
-
-  const handleValidation = useCallback(() => {
-    const reg = /^\d*.?\d{0,2}$/;
-
-    const validInputs = reg.test(from.value) && reg.test(into.value);
-
-    setDisabled(!validInputs);
-  }, [from, into]);
+  const handleSwap = async (data: FormValues) => {};
 
   useEffect(() => {
-    handleValidation();
-  }, [handleValidation]);
-
-  useEffect(() => {
-    from.onFocus();
+    setFocus('from');
   }, []);
 
   useEffect(() => {
-    if (from.value) into.setValue((from.value * fromTokenPrice) / intoTokenPrice);
-  }, [from.value]);
+    setDisabled(fromAmount <= 0 && intoAmount <= 0);
+  }, [fromAmount, intoAmount]);
 
   useEffect(() => {
-    if (into.value) from.setValue((into.value * intoTokenPrice) / fromTokenPrice);
-  }, [into.value]);
+    if (intoPrice) setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
+  }, [fromAmount]);
+
+  useEffect(() => {
+    if (fromPrice) setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
+  }, [intoAmount]);
 
   return (
     <div className={s.root}>
@@ -77,25 +79,39 @@ const TokenOverView: FC = () => {
         </button>
       </div>
       <div className={s.container}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(handleSwap)}>
           <div className={s.group}>
             <div className={s.row}>
-              <SwapCurrencyInput name={fromToken.name} {...from} result={fromCurrency} />
+              <div className={s.swap_currency_input}>
+                <div className={s.input_group}>
+                  <Input type="number" id={fromToken.name} name={'from'} control={control} className={s.input} />
+                  <p className={s.result}>{fromCurrency}</p>
+                </div>
+                <button type="button" className={s.select} onClick={openModal}>
+                  {fromToken.name}
+                </button>
+              </div>
             </div>
-            <button type="button" className={`${s.action} ${s.toggle}`} style={{ margin: '5px 0' }} onClick={onSwitch}>
-              <MdOutlineArrowDownward />
-            </button>
             <div className={s.row}>
-              <SwapCurrencyInput name={intoToken.name} {...into} result={intoCurrency} />
+              <div className={s.swap_currency_input}>
+                <div className={s.input_group}>
+                  <Input type="number" id={intoToken.name} name={'into'} control={control} className={s.input} />
+                  <p className={s.result}>{intoCurrency}</p>
+                </div>
+                <button type="button" className={s.select} onClick={openModal}>
+                  {intoToken.name}
+                </button>
+              </div>
             </div>
             <div className={s.row}>
               <div className={s.info}>
-                <SlInfo /> 1 {intoToken.name} = {(intoTokenPrice / fromTokenPrice).toFixed(6)} {fromToken.name}
+                <SlInfo style={{ marginRight: '5px' }} /> 1 {intoToken.name} = {trimDigit(intoPrice / fromPrice)}{' '}
+                {fromToken.name} ({calculateCurrency({ amount: intoPrice }).result})
               </div>
             </div>
           </div>
           <div className={s.group}>
-            <Button type="submit" disabled={disabled} onClick={() => alert('준비 중입니다.')}>
+            <Button type="button" disabled={disabled} onClick={() => alert('준비 중입니다.')}>
               {disabled ? '금액을 입력하세요' : '스왑'}
             </Button>
           </div>

@@ -1,7 +1,6 @@
 import React, { CSSProperties, FC, MutableRefObject, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock';
 
-import FocusTrap from './FocusTrap';
 import s from './Modal.module.css';
 
 type Props = {
@@ -14,6 +13,7 @@ const Modal: FC<Props> = ({ className, onClose, children }) => {
   const ref = useRef() as MutableRefObject<HTMLDivElement>;
 
   const handleKey = useCallback((e: KeyboardEvent) => {
+    console.log(e.key);
     if (e.key === 'Escape') {
       onClose();
     }
@@ -36,10 +36,10 @@ const Modal: FC<Props> = ({ className, onClose, children }) => {
   return (
     <div className={s.root} onClick={() => onClose()}>
       <div className={s.modal} ref={ref} onClick={(e) => e.stopPropagation()}>
-        <button onClick={() => onClose()} aria-label="Close panel" className={s.close}>
+        <button onClick={onClose} aria-label="Close panel" className={s.close}>
           x
         </button>
-        <FocusTrap focusFirst>{children}</FocusTrap>
+        <div>{children}</div>
       </div>
     </div>
   );

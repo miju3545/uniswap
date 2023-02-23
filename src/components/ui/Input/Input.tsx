@@ -1,29 +1,39 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react';
-import './Input.module.css';
+import React, { FC, InputHTMLAttributes, ChangeEvent } from 'react';
+import { FormValues } from '@components/token/TokenOverView/TokenOverView';
+import { Control, Controller } from 'react-hook-form';
 
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
-  className?: string;
-  onChange?: (...args: any[]) => any;
+  type?: 'number' | 'text';
+  name: string;
+  control: Control<FormValues | any>;
+  onChange?: () => void;
 };
 
-const Input = forwardRef<HTMLInputElement, Props>((props, inputRef) => {
-  const { name, className, children, onChange, ...rest } = props;
+const Input: FC<Props> = (props) => {
+  const { id, type = 'number', name, control, onChange = () => {}, ...rest } = props;
 
   return (
     <label>
-      <input
-        ref={inputRef}
-        data-name={name}
-        className={className}
-        onChange={onChange}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck="false"
-        {...rest}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState: { isDirty, invalid } }) => (
+          <input
+            data-id={id}
+            autoComplete="off"
+            autoCorrect="true"
+            autoCapitalize="off"
+            spellCheck="false"
+            {...field}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              field.onChange(e.target.value);
+              onChange();
+            }}
+            {...rest}
+          />
+        )}
       />
     </label>
   );
-});
-
+};
 export default Input;
