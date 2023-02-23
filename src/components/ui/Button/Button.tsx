@@ -2,7 +2,6 @@ import cn from 'clsx';
 import React, { FC, forwardRef, ButtonHTMLAttributes, JSXElementConstructor, useRef } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import s from './Button.module.css';
-// import { LoadingDots } from '@components/ui'
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   href?: string;
@@ -46,7 +45,6 @@ const Button: FC<ButtonProps> = forwardRef((props, buttonRef) => {
       {...rest}
     >
       {children}
-      {loading && <i className="pl-2 m-0 flex">{/* <LoadingDots /> */}</i>}
     </Component>
   );
 });

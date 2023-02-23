@@ -1,6 +1,6 @@
 .root {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #1974e4;
   color: #fff;
   border: none;
@@ -10,11 +10,12 @@
 
 .disabled,
 .disabled:hover {
-  filter: grayscale(1);
   -webkit-transform: translateZ(0);
   -webkit-perspective: 1000;
   -webkit-backface-visibility: hidden;
   cursor: text;
+  background-color: #e4e6ea;
+  color: gray;
 }
 
 .progress {
