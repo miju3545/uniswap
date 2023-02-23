@@ -1,8 +1,13 @@
 import React, { FC } from 'react';
-import MainView from '@components/main/MainView';
+import OverView from '@components/token/TokenOverView';
+import { TokenProvider } from '@components/token/context';
 
-const Main: FC = () => {
-  return <MainView />;
+const Index: FC = () => {
+  return (
+    <TokenProvider>
+      <OverView />
+    </TokenProvider>
+  );
 };
 
-export default Main;
+export default Index;
