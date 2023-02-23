@@ -22,20 +22,21 @@ export const getClient = (() => {
   };
 })();
 
-const BASE_URL = '';
+const BASE_URL = 'https://api.coingecko.com/api/v3/simple/price';
 
-export const restFetcher = async ({
+export const fetcher = async ({
   method,
   path,
   body,
   params,
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  path: string;
+  path?: string;
   body?: AnyOBJ;
   params?: AnyOBJ;
 }) => {
-  let url = `${BASE_URL}${path}`;
+  let url = `${BASE_URL}`;
+
   const options: RequestInit = {
     method,
     headers: {
@@ -43,6 +44,8 @@ export const restFetcher = async ({
       'Access-Control-Allow-Origin': BASE_URL,
     },
   };
+
+  if (path) url += path;
 
   if (params) {
     const searchParams = new URLSearchParams(params);
@@ -60,4 +63,6 @@ export const restFetcher = async ({
   }
 };
 
-export const QueryKeys = {};
+export const QueryKeys = {
+  TOKEN_USD: 'TOKEN_USD',
+};
