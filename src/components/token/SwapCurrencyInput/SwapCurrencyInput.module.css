@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.group {
+  flex: 3;
+  width: 100%;
+}
+
+.group .input {
+  width: 100%;
+  background-color: #e6f3fe;
+  border: none;
+  padding: 14px 10px;
+  font-size: 30px;
+  color: #1676f2;
+  border-radius: 6px;
+}
+
+.group .input:focus {
+  outline: none;
+}
+.select {
+  flex: 1;
+  height: 38px;
+  border-radius: 20px;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 700;
+  border: 1px solid #1974e4;
+  background-color: #fff;
+  color: #1974e4;
+}
+
+.select:hover {
+  background-color: #1974e4;
+  color: #fff;
+}
+.result {
+  font-size: 14px;
+  color: #65676b;
+  margin-top: 10px;
+  font-weight: 500;
+}
