@@ -13,7 +13,7 @@ export type ReturnState = State & {
 
 const initialState: State = {
   displayModal: false,
-  modalView: 'SETTINGS_VIEW',
+  modalView: 'SELECT_TOKEN_VIEW',
 };
 
 export type Action =
@@ -28,7 +28,7 @@ export type Action =
       view: MODAL_VIEWS;
     };
 
-type MODAL_VIEWS = 'SETTINGS_VIEW' | 'SELECT_TOKEN_VIEW';
+export type MODAL_VIEWS = 'SELECT_TOKEN_VIEW';
 
 export const UIContext = createContext<ReturnState | null>(null);
 
