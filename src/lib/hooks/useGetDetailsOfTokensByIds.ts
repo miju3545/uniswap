@@ -1,6 +1,5 @@
 import { fetcher, QueryKeys } from '@lib/queryClient';
 import { useQueries } from 'react-query';
-import debounce from '../debounce';
 
 const fetchTokenById = async (id: string) => {
   return await fetcher({
