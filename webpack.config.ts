@@ -18,6 +18,7 @@ const config: Configuration = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
+      '@assets': path.resolve(__dirname, 'src/assets'),
       '@hooks': path.resolve(__dirname, 'src/lib/hooks'),
       '@components': path.resolve(__dirname, 'src/components'),
       '@pages': path.resolve(__dirname, 'src/pages'),
@@ -55,7 +56,19 @@ const config: Configuration = {
       },
       {
         test: /\.css?$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[hash:base64]', // default
+                auto: true, // default
+              },
+              sourceMap: true,
+            },
+          },
+        ],
       },
     ],
   },

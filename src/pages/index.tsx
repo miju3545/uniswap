@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
+import MainView from '@components/main/MainView';
 
-const Home: FC = () => {
-  return <div>Home</div>;
+const Main: FC = () => {
+  return <MainView />;
 };
 
-export default Home;
+export default Main;

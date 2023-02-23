@@ -11,11 +11,12 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
-      "@lib/*": ["src/lib/*"],
-      "@hooks/*": ["src/lib/hooks/*"],
-      "@typings/*": ["src/lib/typings/*"]
+      "@assets/*": ["./assets/*"],
+      "@components/*": ["./components/*"],
+      "@pages/*": ["./pages/*"],
+      "@lib/*": ["./lib/*"],
+      "@hooks/*": ["./lib/hooks/*"],
+      "@typings/*": ["./lib/typings/*"]
     }
   }
 }
