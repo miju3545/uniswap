@@ -1,58 +1,74 @@
-import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext } from 'react';
-import tokenList from '../../config/token-list.json';
+import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext, useEffect, useState } from 'react';
+import tokenList from '../../config/token-list';
+import { getHistory, updateHistory } from '../../lib/updateHistory';
 
 type Token = {
   id: string;
-  name: string;
+  symbol: string;
 };
+
 export type State = {
   fromToken: Token;
   intoToken: Token;
+  history: string[];
 };
 
 export type ReturnState = State & {
-  setFromToken: (token: Token) => void;
-  setIntoToken: (token: Token) => void;
+  setFromToken: (symbol: string) => void;
+  setIntoToken: (symbol: string) => void;
 };
 
 const initialState: State = {
   fromToken: {
     id: tokenList['ETH'].id,
-    name: 'ETH',
+    symbol: 'ETH',
   },
   intoToken: {
     id: tokenList['USDT'].id,
-    name: 'USDT',
+    symbol: 'USDT',
   },
+  history: getHistory(['ETH', 'USDT']),
 };
 
 export type Action =
   | {
       type: 'SET_FROM_TOKEN';
-      token: Token;
+      symbol: string;
     }
   | {
       type: 'SET_INTO_TOKEN';
-      token: Token;
+      symbol: string;
     };
 
 export const TokenContext = createContext<ReturnState | null>(null);
 
-TokenContext.displayName = 'UIContext';
+TokenContext.displayName = 'TokenContext';
 
 function tokenReducer(state: State, action: Action): State {
   switch (action.type) {
     case 'SET_FROM_TOKEN': {
+      const history = Array.from(new Set([...state.history, action.symbol]));
+      updateHistory(history);
+
       return {
         ...state,
-        fromToken: { ...state.fromToken, ...action.token },
+        fromToken: { ...state.fromToken, symbol: action.symbol, id: tokenList[action.symbol].id },
+        history,
       };
     }
     case 'SET_INTO_TOKEN': {
+      const history = Array.from(new Set([...state.history, action.symbol]));
+      updateHistory(history);
+
       return {
         ...state,
-        intoToken: { ...state.fromToken, ...action.token },
+        intoToken: { ...state.fromToken, symbol: action.symbol, id: tokenList[action.symbol].id },
+        history,
       };
+    }
+
+    default: {
+      return { ...state };
     }
   }
 }
@@ -60,8 +76,8 @@ function tokenReducer(state: State, action: Action): State {
 export const TokenProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = React.useReducer(tokenReducer, initialState);
 
-  const setFromToken = useCallback((token: Token) => dispatch({ type: 'SET_FROM_TOKEN', token }), [dispatch]);
-  const setIntoToken = useCallback((token: Token) => dispatch({ type: 'SET_INTO_TOKEN', token }), [dispatch]);
+  const setFromToken = useCallback((symbol: string) => dispatch({ type: 'SET_FROM_TOKEN', symbol }), [dispatch]);
+  const setIntoToken = useCallback((symbol: string) => dispatch({ type: 'SET_INTO_TOKEN', symbol }), [dispatch]);
 
   const value: ReturnState = useMemo(
     () => ({
