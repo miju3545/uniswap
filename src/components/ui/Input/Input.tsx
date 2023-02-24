@@ -10,7 +10,7 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input: FC<Props> = (props) => {
-  const { id, type = 'number', name, control, onChange = () => {}, ...rest } = props;
+  const { id, type = 'text', name, control, onChange = () => {}, ...rest } = props;
 
   return (
     <label>
@@ -19,6 +19,7 @@ const Input: FC<Props> = (props) => {
         control={control}
         render={({ field, fieldState: { isDirty, invalid } }) => (
           <input
+            type={type}
             data-id={id}
             autoComplete="off"
             autoCorrect="true"
