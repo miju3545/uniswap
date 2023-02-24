@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, JSXElementConstructor } from 'react';
+import React, { FC, ReactNode } from 'react';
 import s from './Layout.module.css';
 import Modal from '@components/ui/Modal';
 import { UIProvider, useUI } from '../../ui/context';
