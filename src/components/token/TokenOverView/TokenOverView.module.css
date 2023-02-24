@@ -51,7 +51,7 @@
   height: calc(100% - 54px);
 }
 
-.group {
+.section {
   margin-bottom: 10px;
   width: 100%;
   display: flex;
@@ -60,10 +60,11 @@
   position: relative;
 }
 
-.row {
+.section__group {
   width: 100%;
   margin-bottom: 14px;
 }
+
 .toggle {
   font-size: 16px;
   width: 35px;
@@ -76,13 +77,18 @@
 }
 
 .info {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
   color: #65676b;
   margin-top: 10px;
   font-weight: 700;
   display: flex;
   align-items: center;
+}
+
+.info svg {
+  margin-right: 3px;
+  margin-bottom: 3px;
 }
 
 .swap_currency_input {
@@ -93,12 +99,12 @@
   border-radius: 6px;
 }
 
-.input_group {
+.input_wrapper {
   flex: 3;
   width: 100%;
 }
 
-.input_group .input {
+.input_wrapper .input {
   width: 100%;
   background-color: #e6f3fe;
   border: none;

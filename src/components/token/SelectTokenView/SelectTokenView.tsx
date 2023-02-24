@@ -14,7 +14,7 @@ import { RiEditBoxLine } from 'react-icons/ri';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   const { symbol, origin } = props;
-  const { setFromToken, setIntoToken, fromToken, intoToken, history } = useToken();
+  const { setFromToken, setIntoToken, fromToken, intoToken } = useToken();
   const { closeModal } = useUI();
 
   const handleSelect = () => {
@@ -40,7 +40,7 @@ const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
 
 const option: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   const { symbol, origin } = props;
-  const { setFromToken, setIntoToken, fromToken, intoToken, history } = useToken();
+  const { setFromToken, setIntoToken, fromToken, intoToken } = useToken();
   const { closeModal } = useUI();
 
   const selected = origin === 'from' ? symbol === fromToken.symbol : symbol === intoToken.symbol;

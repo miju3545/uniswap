@@ -1,11 +1,11 @@
-import React, { FC, useState, useEffect, KeyboardEvent, useCallback } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import s from './TokenOverView.module.css';
 import { ORIGINS, useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
 import useGetDetailsOfTokensByIds from '@lib/hooks/useGetDetailsOfTokensByIds';
 import { useToken } from '../context';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { SlInfo } from 'react-icons/sl';
+import { BiInfoCircle } from 'react-icons/bi';
 import useCurrencies, { currencyFormatter } from '@lib/hooks/useCurrencies';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -17,7 +17,7 @@ export type FormValues = {
   into: string | number;
 };
 
-const trimDigit = (digit: number, fraction: number | undefined = 2) => {
+const trimDigit = (digit: number, fraction: number | undefined = 10) => {
   const str = digit.toLocaleString(undefined, { maximumFractionDigits: fraction });
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
@@ -36,7 +36,7 @@ const TokenOverView: FC = () => {
     setFocus,
     setValue,
     watch,
-    formState: { isValid, isDirty },
+    formState: { isValid },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
@@ -46,7 +46,6 @@ const TokenOverView: FC = () => {
   const [disabled, setDisabled] = useState(true);
 
   const { fromToken, intoToken } = useToken();
-
   const [fromDetail, intoDetail] = useGetDetailsOfTokensByIds(fromToken.id, intoToken.id);
 
   const fromPrice = fromDetail?.data?.[fromToken.id]?.usd || 0;
@@ -57,8 +56,6 @@ const TokenOverView: FC = () => {
     { amount: fromAmount, price: fromPrice },
     { amount: intoAmount, price: intoPrice }
   );
-
-  const handleSwap = async (data: FormValues) => {};
 
   const handleSelect = (origin: ORIGINS) => {
     openModal();
@@ -77,11 +74,13 @@ const TokenOverView: FC = () => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromAmount]);
+  }, [fromAmount, fromCurrency]);
 
   useEffect(() => {
-    if (intoAmount) setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
-  }, [intoAmount]);
+    if (intoAmount) {
+      setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
+    }
+  }, [intoAmount, intoCurrency]);
 
   return (
     <div className={s.root}>
@@ -92,19 +91,12 @@ const TokenOverView: FC = () => {
         </button>
       </div>
       <div className={s.container}>
-        <form onSubmit={handleSubmit(handleSwap)}>
-          <div className={s.group}>
-            <div className={s.row}>
+        <form onSubmit={handleSubmit(() => {})}>
+          <div className={s.section}>
+            <div className={s.section__group}>
               <div className={s.swap_currency_input}>
-                <div className={s.input_group}>
-                  <Input
-                    type="number"
-                    id={fromToken.symbol}
-                    name={'from'}
-                    control={control}
-                    className={s.input}
-                    step="0.01"
-                  />
+                <div className={s.input_wrapper}>
+                  <Input type="number" id={fromToken.symbol} name={'from'} control={control} className={s.input} />
                   <p className={s.result}>{fromCurrency}</p>
                 </div>
                 <button type="button" className={s.select} onClick={() => handleSelect('from')}>
@@ -112,17 +104,10 @@ const TokenOverView: FC = () => {
                 </button>
               </div>
             </div>
-            <div className={s.row}>
+            <div className={s.section__group}>
               <div className={s.swap_currency_input}>
-                <div className={s.input_group}>
-                  <Input
-                    type="number"
-                    id={intoToken.symbol}
-                    name={'into'}
-                    control={control}
-                    className={s.input}
-                    step="0.01"
-                  />
+                <div className={s.input_wrapper}>
+                  <Input type="number" id={intoToken.symbol} name={'into'} control={control} className={s.input} />
                   <p className={s.result}>{intoCurrency}</p>
                 </div>
                 <button type="button" className={s.select} onClick={() => handleSelect('into')}>
@@ -130,15 +115,14 @@ const TokenOverView: FC = () => {
                 </button>
               </div>
             </div>
-            <div className={s.row}>
+            <div className={s.section__group}>
               <div className={s.info}>
-                <SlInfo style={{ marginRight: '5px' }} /> 1 {intoToken.symbol} = {trimDigit(intoPrice / fromPrice, 6)}{' '}
-                {` `}
+                <BiInfoCircle /> 1 {intoToken.symbol} = {trimDigit(intoPrice / fromPrice, 7)} {` `}
                 {fromToken.symbol} ({currencyFormatter({ amount: intoPrice, fraction: 4 })})
               </div>
             </div>
           </div>
-          <div className={s.group}>
+          <div className={s.section}>
             <Button type="button" disabled={disabled} onClick={() => alert('준비 중입니다.')}>
               {disabled ? '금액을 입력하세요' : '스왑'}
             </Button>
