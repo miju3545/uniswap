@@ -13,7 +13,6 @@ const Modal: FC<Props> = ({ className, onClose, children }) => {
   const ref = useRef() as MutableRefObject<HTMLDivElement>;
 
   const handleKey = useCallback((e: KeyboardEvent) => {
-    console.log(e.key);
     if (e.key === 'Escape') {
       onClose();
     }
