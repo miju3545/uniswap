@@ -10,9 +10,6 @@
 
 .disabled,
 .disabled:hover {
-  -webkit-transform: translateZ(0);
-  -webkit-perspective: 1000;
-  -webkit-backface-visibility: hidden;
   cursor: text;
   background-color: #e4e6ea;
   color: gray;

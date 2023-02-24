@@ -2,18 +2,20 @@ import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext }
 
 export type State = {
   displayModal: boolean;
-  modalView: string;
+  modalView: MODAL_VIEWS;
+  origin: ORIGINS;
 };
 
 export type ReturnState = State & {
   openModal: () => void;
   closeModal: () => void;
-  setModalView: (modalView: MODAL_VIEWS) => void;
+  setModalView: ({ modalView, origin }: { modalView: MODAL_VIEWS; origin: ORIGINS }) => void;
 };
 
 const initialState: State = {
   displayModal: false,
   modalView: 'SELECT_TOKEN_VIEW',
+  origin: 'from',
 };
 
 export type Action =
@@ -25,10 +27,11 @@ export type Action =
     }
   | {
       type: 'SET_MODAL_VIEW';
-      view: MODAL_VIEWS;
+      data: { modalView: MODAL_VIEWS; origin: ORIGINS };
     };
 
 export type MODAL_VIEWS = 'SELECT_TOKEN_VIEW';
+export type ORIGINS = 'from' | 'into';
 
 export const UIContext = createContext<ReturnState | null>(null);
 
@@ -51,7 +54,8 @@ function uiReducer(state: State, action: Action): State {
     case 'SET_MODAL_VIEW': {
       return {
         ...state,
-        modalView: action.view,
+        modalView: action.data.modalView,
+        origin: action.data.origin,
       };
     }
   }
@@ -63,7 +67,10 @@ export const UIProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const openModal = useCallback(() => dispatch({ type: 'OPEN_MODAL' }), [dispatch]);
   const closeModal = useCallback(() => dispatch({ type: 'CLOSE_MODAL' }), [dispatch]);
 
-  const setModalView = useCallback((view: MODAL_VIEWS) => dispatch({ type: 'SET_MODAL_VIEW', view }), [dispatch]);
+  const setModalView = useCallback(
+    (data: { modalView: MODAL_VIEWS; origin: ORIGINS }) => dispatch({ type: 'SET_MODAL_VIEW', data }),
+    [dispatch]
+  );
 
   const value: ReturnState = useMemo(
     () => ({
