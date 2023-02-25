@@ -22,8 +22,6 @@ export const trimDigit = (digit: number | string, fraction: number | undefined =
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
 
-// export const digitsOnly = (value: string = '') => /^\d*[.{0,}\d*]\d{0, 10}$/.test(value) || value.length === 0;
-// export const digitsOnly = (value: string = '') => /^[\d]*[.{0,}\.?[\d]{0,10}$/.test(value) || value.length === 0;
 export const digitsOnly = (value: string = '') => /(^\d+$)|(^\d{1,}.\d{0,10}$)/.test(value) || value.length === 0;
 
 const TokenView: FC = () => {
