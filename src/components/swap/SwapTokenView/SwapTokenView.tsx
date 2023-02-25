@@ -30,7 +30,14 @@ const TokenView: FC = () => {
     into: yup.string().test('validation', 'digits only field', digitsOnly),
   });
 
-  const { control, handleSubmit, setFocus, setValue, watch } = useForm<FormValues>({
+  const {
+    control,
+    handleSubmit,
+    setFocus,
+    setValue,
+    watch,
+    formState: { isDirty },
+  } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
   });
@@ -60,20 +67,20 @@ const TokenView: FC = () => {
   }, []);
 
   useEffect(() => {
+    setDisabled(!fromAmount || !intoAmount);
+  }, [fromAmount, intoAmount]);
+
+  useEffect(() => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromPrice]);
+  }, [fromCurrency]);
 
   useEffect(() => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoPrice]);
-
-  useEffect(() => {
-    setDisabled(!fromAmount || !intoAmount);
-  }, [fromAmount, intoAmount]);
+  }, [intoCurrency]);
 
   return (
     <div className={s.root}>
