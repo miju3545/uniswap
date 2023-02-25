@@ -74,13 +74,13 @@ const TokenView: FC = () => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromCurrency]);
+  }, [fromPrice, fromToken.id]);
 
   useEffect(() => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoCurrency]);
+  }, [intoPrice, intoToken.id]);
 
   return (
     <div className={s.root}>
@@ -103,6 +103,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={() => {
+                      // 왜 늦게 반영이 한 스텝 느릴까....
                       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
                     }}
                   />
