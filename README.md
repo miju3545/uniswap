@@ -10,7 +10,7 @@
 ## 구조
 
 ```
-mesher-assignment
+uniswap
 └─ src
    ├─ App.tsx
    ├─ routes.tsx
