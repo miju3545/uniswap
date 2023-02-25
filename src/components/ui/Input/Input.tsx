@@ -33,8 +33,8 @@ const Input: FC<Props> = forwardRef((props, inputRef) => {
                   return;
                 }
               }
-              field.onChange(e);
               onChange();
+              field.onChange(e.target.value);
             }}
             {...rest}
             ref={mergeRefs([field.ref, inputRef])}

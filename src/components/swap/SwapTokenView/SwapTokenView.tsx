@@ -73,7 +73,7 @@ const TokenView: FC = () => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoPrice]);
+  }, [intoPrice, intoCurrency]);
 
   return (
     <div className={s.root}>
