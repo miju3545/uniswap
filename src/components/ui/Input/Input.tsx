@@ -1,7 +1,6 @@
-import React, { FC, InputHTMLAttributes, ChangeEvent, useEffect, forwardRef, MutableRefObject } from 'react';
-import { digitsOnly, FormValues, trimDigit } from '@components/swap/SwapTokenView/SwapTokenView';
+import React, { FC, InputHTMLAttributes, ChangeEvent } from 'react';
+import { digitsOnly, FormValues } from '@components/swap/SwapTokenView/SwapTokenView';
 import { Control, Controller } from 'react-hook-form';
-import { mergeRefs } from 'react-merge-refs';
 
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'number' | 'text';
@@ -10,7 +9,7 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: FC<Props> = forwardRef((props, inputRef) => {
+const Input: FC<Props> = (props) => {
   const { id, type = 'text', value, name, control, onChange = () => {}, ...rest } = props;
 
   return (
@@ -37,12 +36,10 @@ const Input: FC<Props> = forwardRef((props, inputRef) => {
               field.onChange(e.target.value);
             }}
             {...rest}
-            value={value}
-            ref={mergeRefs([field.ref, inputRef])}
           />
         )}
       />
     </label>
   );
-});
+};
 export default Input;
