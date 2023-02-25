@@ -63,13 +63,13 @@ const TokenView: FC = () => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromToken]);
+  }, [fromPrice]);
 
   useEffect(() => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoToken]);
+  }, [intoPrice]);
 
   useEffect(() => {
     setDisabled(!fromAmount || !intoAmount);
