@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent } from 'react';
 import s from './SwapTokenView.module.css';
 import { ORIGINS, useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
@@ -30,14 +30,7 @@ const TokenView: FC = () => {
     into: yup.string().test('validation', 'digits only field', digitsOnly),
   });
 
-  const {
-    control,
-    handleSubmit,
-    setFocus,
-    setValue,
-    watch,
-    formState: { isDirty },
-  } = useForm<FormValues>({
+  const { control, handleSubmit, setFocus, setValue, watch } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
   });
@@ -80,7 +73,7 @@ const TokenView: FC = () => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoPrice, intoToken.id]);
+  }, [intoPrice]);
 
   return (
     <div className={s.root}>
@@ -102,9 +95,8 @@ const TokenView: FC = () => {
                     name={'from'}
                     control={control}
                     className={s.input}
-                    onChange={() => {
-                      // 왜 늦게 반영이 한 스텝 느릴까....
-                      setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setValue('into', trimDigit((+e.target.value * fromPrice) / intoPrice));
                     }}
                   />
                   <p className={s.result}>{fromCurrency}</p>
@@ -121,10 +113,11 @@ const TokenView: FC = () => {
                     type="number"
                     id={intoToken.symbol}
                     name={'into'}
+                    value={intoAmount}
                     control={control}
                     className={s.input}
-                    onChange={() => {
-                      setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setValue('from', trimDigit((+e.target.value * intoPrice) / fromPrice));
                     }}
                   />
                   <p className={s.result}>{intoCurrency}</p>

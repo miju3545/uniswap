@@ -7,11 +7,11 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'number' | 'text';
   name: string;
   control: Control<FormValues | any>;
-  onChange?: () => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const Input: FC<Props> = forwardRef((props, inputRef) => {
-  const { id, type = 'text', name, control, onChange = () => {}, ...rest } = props;
+  const { id, type = 'text', value, name, control, onChange = () => {}, ...rest } = props;
 
   return (
     <label>
@@ -33,10 +33,11 @@ const Input: FC<Props> = forwardRef((props, inputRef) => {
                   return;
                 }
               }
-              onChange();
+              onChange(e);
               field.onChange(e.target.value);
             }}
             {...rest}
+            value={value}
             ref={mergeRefs([field.ref, inputRef])}
           />
         )}
