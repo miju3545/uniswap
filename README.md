@@ -1,13 +1,13 @@
 ::과제
 
-## 0. 실행 방법
+## 실행 방법
 
 ```bash
 > yarn
 > yarn start # http://localhost:3000
 ```
 
-## 1. 구조
+## 구조
 
 ```
 mesher-assignment
