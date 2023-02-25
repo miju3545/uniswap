@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, ChangeEvent } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import s from './SwapTokenView.module.css';
 import { ORIGINS, useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
