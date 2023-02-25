@@ -1,6 +1,5 @@
-import React, { CSSProperties, FC, MutableRefObject, ReactNode, useCallback, useEffect, useRef } from 'react';
+import React, { FC, MutableRefObject, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock';
-
 import s from './Modal.module.css';
 
 type Props = {
@@ -33,11 +32,8 @@ const Modal: FC<Props> = ({ className, onClose, children }) => {
   }, [handleKey]);
 
   return (
-    <div className={s.root} onClick={() => onClose()}>
+    <div className={s.root} onClick={onClose}>
       <div className={s.modal} ref={ref} onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} aria-label="Close panel" className={s.close}>
-          x
-        </button>
         <div>{children}</div>
       </div>
     </div>

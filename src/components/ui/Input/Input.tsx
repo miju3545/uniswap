@@ -1,6 +1,7 @@
-import React, { FC, InputHTMLAttributes, ChangeEvent } from 'react';
-import { FormValues } from '@components/token/TokenOverView/TokenOverView';
+import React, { FC, InputHTMLAttributes, ChangeEvent, useRef, forwardRef, MutableRefObject } from 'react';
+import { digitsOnly, FormValues, trimDigit } from '@components/swap/SwapTokenView/SwapTokenView';
 import { Control, Controller } from 'react-hook-form';
+import { mergeRefs } from 'react-merge-refs';
 
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'number' | 'text';
@@ -9,7 +10,7 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
   onChange?: () => void;
 };
 
-const Input: FC<Props> = (props) => {
+const Input: FC<Props> = forwardRef((props, inputRef) => {
   const { id, type = 'text', name, control, onChange = () => {}, ...rest } = props;
 
   return (
@@ -17,7 +18,7 @@ const Input: FC<Props> = (props) => {
       <Controller
         name={name}
         control={control}
-        render={({ field, fieldState: { isDirty, invalid } }) => (
+        render={({ field }) => (
           <input
             type={type}
             data-id={id}
@@ -27,14 +28,20 @@ const Input: FC<Props> = (props) => {
             spellCheck="false"
             {...field}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              field.onChange(e.target.value);
+              if (type === 'number') {
+                if (!digitsOnly(e.target.value)) {
+                  return;
+                }
+              }
+              field.onChange(e);
               onChange();
             }}
             {...rest}
+            ref={mergeRefs([field.ref, inputRef])}
           />
         )}
       />
     </label>
   );
-};
+});
 export default Input;

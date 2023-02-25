@@ -3,7 +3,7 @@ import React, { FC, forwardRef, ButtonHTMLAttributes, JSXElementConstructor, use
 import { mergeRefs } from 'react-merge-refs';
 import s from './Button.module.css';
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   href?: string;
   className?: string;
   active?: boolean;
@@ -14,7 +14,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   disabled?: boolean;
 };
 
-const Button: FC<ButtonProps> = forwardRef((props, buttonRef) => {
+const Button: FC<Props> = forwardRef((props, buttonRef) => {
   const {
     className,
     children,
