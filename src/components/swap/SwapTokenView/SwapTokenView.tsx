@@ -67,7 +67,7 @@ const TokenView: FC = () => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromPrice, fromToken.id]);
+  }, [fromPrice]);
 
   useEffect(() => {
     if (intoAmount) {
