@@ -7,7 +7,7 @@ import { TfiClose } from 'react-icons/tfi';
 import { ORIGINS, useUI } from '../../ui/context';
 import { Input } from '@components/ui';
 import { BiSearch } from 'react-icons/bi';
-import { useToken } from '@components/token/context';
+import { useToken } from '@components/swap/context';
 import tokenList from '../../../config/token-list';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';

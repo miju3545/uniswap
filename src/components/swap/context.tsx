@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext, useEffect, useState } from 'react';
+import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext } from 'react';
 import tokenList from '../../config/token-list';
 import { getHistory, updateHistory } from '../../lib/updateHistory';
 
@@ -73,7 +73,7 @@ function tokenReducer(state: State, action: Action): State {
   }
 }
 
-export const TokenProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const SwapTokenProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = React.useReducer(tokenReducer, initialState);
 
   const setFromToken = useCallback((symbol: string) => dispatch({ type: 'SET_FROM_TOKEN', symbol }), [dispatch]);

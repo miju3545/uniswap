@@ -1,5 +1,5 @@
-import React, { FC, useState, useEffect } from 'react';
-import s from './TokenOverView.module.css';
+import React, { FC, useState, useEffect, ChangeEvent } from 'react';
+import s from './SwapTokenView.module.css';
 import { ORIGINS, useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
 import useGetDetailsOfTokensByIds from '@lib/hooks/useGetDetailsOfTokensByIds';
@@ -17,27 +17,22 @@ export type FormValues = {
   into: string | number;
 };
 
-const trimDigit = (digit: number, fraction: number | undefined = 10) => {
-  const str = digit.toLocaleString(undefined, { maximumFractionDigits: fraction });
+export const trimDigit = (digit: number | string, fraction: number | undefined = 10) => {
+  const str = digit.toLocaleString(undefined, { minimumFractionDigits: fraction, maximumFractionDigits: fraction });
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
 
-const digitsOnly = (value: string = '') => /^\d*[.{0,}\d*]\d*$/.test(value) || value.length === 0;
+// export const digitsOnly = (value: string = '') => /^\d*[.{0,}\d*]\d{0, 10}$/.test(value) || value.length === 0;
+// export const digitsOnly = (value: string = '') => /^[\d]*[.{0,}\.?[\d]{0,10}$/.test(value) || value.length === 0;
+export const digitsOnly = (value: string = '') => /(^\d+$)|(^\d{1,}.\d{0,10}$)/.test(value) || value.length === 0;
 
-const TokenOverView: FC = () => {
+const TokenView: FC = () => {
   const schema = yup.object().shape({
     from: yup.string().test('validation', 'digits only field', digitsOnly),
     into: yup.string().test('validation', 'digits only field', digitsOnly),
   });
 
-  const {
-    control,
-    handleSubmit,
-    setFocus,
-    setValue,
-    watch,
-    formState: { isValid },
-  } = useForm<FormValues>({
+  const { control, handleSubmit, setFocus, setValue, watch } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
   });
@@ -74,19 +69,19 @@ const TokenOverView: FC = () => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromAmount, fromCurrency]);
+  }, [fromPrice]);
 
   useEffect(() => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoAmount, intoCurrency]);
+  }, [intoPrice]);
 
   return (
     <div className={s.root}>
       <div className={s.header}>
         <h3>스왑</h3>
-        <button type="button" className={s.action} onClick={() => alert('준비 중입니다.')}>
+        <button type="button" id="setting-button" className={s.action} onClick={() => alert('준비 중입니다.')}>
           <IoSettingsOutline />
         </button>
       </div>
@@ -96,7 +91,16 @@ const TokenOverView: FC = () => {
             <div className={s.section__group}>
               <div className={s.swap_currency_input}>
                 <div className={s.input_wrapper}>
-                  <Input type="number" id={fromToken.symbol} name={'from'} control={control} className={s.input} />
+                  <Input
+                    type="number"
+                    id={fromToken.symbol}
+                    name={'from'}
+                    control={control}
+                    className={s.input}
+                    onChange={() => {
+                      setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
+                    }}
+                  />
                   <p className={s.result}>{fromCurrency}</p>
                 </div>
                 <button type="button" className={s.select} onClick={() => handleSelect('from')}>
@@ -107,7 +111,16 @@ const TokenOverView: FC = () => {
             <div className={s.section__group}>
               <div className={s.swap_currency_input}>
                 <div className={s.input_wrapper}>
-                  <Input type="number" id={intoToken.symbol} name={'into'} control={control} className={s.input} />
+                  <Input
+                    type="number"
+                    id={intoToken.symbol}
+                    name={'into'}
+                    control={control}
+                    className={s.input}
+                    onChange={() => {
+                      setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
+                    }}
+                  />
                   <p className={s.result}>{intoCurrency}</p>
                 </div>
                 <button type="button" className={s.select} onClick={() => handleSelect('into')}>
@@ -133,4 +146,4 @@ const TokenOverView: FC = () => {
   );
 };
 
-export default TokenOverView;
+export default TokenView;

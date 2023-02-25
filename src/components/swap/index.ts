@@ -1,2 +1,2 @@
-export { default as TokenOverView } from './TokenOverView';
+export { default as SwapTokenView } from './SwapTokenView';
 export { default as SelectTokenView } from './SelectTokenView';
