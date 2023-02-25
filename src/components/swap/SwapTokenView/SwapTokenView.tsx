@@ -63,13 +63,13 @@ const TokenView: FC = () => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
-  }, [fromPrice]);
+  }, [fromToken, fromAmount]);
 
   useEffect(() => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoPrice]);
+  }, [intoToken, intoAmount]);
 
   useEffect(() => {
     setDisabled(!fromAmount || !intoAmount);
@@ -96,7 +96,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={() => {
-                      setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
+                      // setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
                     }}
                   />
                   <p className={s.result}>{fromCurrency}</p>
@@ -116,7 +116,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={() => {
-                      setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
+                      // setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
                     }}
                   />
                   <p className={s.result}>{intoCurrency}</p>

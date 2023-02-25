@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, ChangeEvent, useRef, forwardRef, MutableRefObject } from 'react';
+import React, { FC, InputHTMLAttributes, ChangeEvent, useEffect, forwardRef, MutableRefObject } from 'react';
 import { digitsOnly, FormValues, trimDigit } from '@components/swap/SwapTokenView/SwapTokenView';
 import { Control, Controller } from 'react-hook-form';
 import { mergeRefs } from 'react-merge-refs';
