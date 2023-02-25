@@ -60,10 +60,6 @@ const TokenView: FC = () => {
   }, []);
 
   useEffect(() => {
-    setDisabled(!fromAmount || !intoAmount);
-  }, [fromAmount, intoAmount]);
-
-  useEffect(() => {
     if (fromAmount) {
       setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
     }
@@ -73,7 +69,11 @@ const TokenView: FC = () => {
     if (intoAmount) {
       setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
     }
-  }, [intoPrice, intoCurrency]);
+  }, [intoPrice]);
+
+  useEffect(() => {
+    setDisabled(!fromAmount || !intoAmount);
+  }, [fromAmount, intoAmount]);
 
   return (
     <div className={s.root}>
