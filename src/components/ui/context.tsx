@@ -52,13 +52,14 @@ function uiReducer(state: State, action: Action): State {
       };
     }
     case 'SET_MODAL_VIEW': {
+      const { modalView, origin } = action.data;
+
       return {
         ...state,
-        modalView: action.data.modalView,
-        origin: action.data.origin,
+        modalView,
+        origin,
       };
     }
-
     default: {
       return { ...state };
     }
