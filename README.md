@@ -45,8 +45,8 @@ uniswap
    │  └─ hooks
    │    └─ useCurrencies.tsx
    │    └─ useGetDetailsOfTokensByIds
-   │  └─ typings.ts
    │  └─ updateHistory.ts
+   │  └─ types.ts
    └─ config
       └─ token-list.ts
 ```
