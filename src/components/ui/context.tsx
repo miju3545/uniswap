@@ -58,6 +58,10 @@ function uiReducer(state: State, action: Action): State {
         origin: action.data.origin,
       };
     }
+
+    default: {
+      return { ...state };
+    }
   }
 }
 
