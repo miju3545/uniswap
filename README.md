@@ -21,7 +21,7 @@ uniswap
    ├─ routes.tsx
    ├─ assets
    │  └─ main.css
-   ├─ component
+   ├─ components
    │  ├─ common
    │  │  └─ Layout
    │  ├─ swap
@@ -33,11 +33,6 @@ uniswap
    │     └─ Input
    │     └─ Modal
    │     └─ context.tsx
-   ├─ lib
-   │  ├─ utils.ts
-   │  └─ validation.ts
-   ├─ router
-   │  └─ router.tsx
    ├─ pages
    │  └─ _layout.tsx
    │  └─ swap.tsx
