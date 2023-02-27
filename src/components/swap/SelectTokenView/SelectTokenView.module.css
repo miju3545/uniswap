@@ -96,14 +96,16 @@
   color: #1676f2;
 }
 
-.options {
+.items {
   max-height: 340px;
   overflow-x: scroll;
   width: 100%;
   margin-bottom: 26px;
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
 }
 
-.option__inner {
+.item__inner {
   padding: 10px;
   width: 100%;
   font-size: 16px;
@@ -113,11 +115,11 @@
   transition: 0.3s ease;
 }
 
-.option:not(:last-child) {
+.item:not(:last-child) {
   border-bottom: 1px solid #dfdfdf;
 }
 
-.option:hover {
+.item:hover {
   background-color: #e6f3fe;
   color: #1676f2;
   cursor: pointer;

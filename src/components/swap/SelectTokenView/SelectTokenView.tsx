@@ -13,8 +13,7 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
-  const { symbol, origin } = props;
+const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
   const { setFromToken, setIntoToken, fromToken, intoToken } = useToken();
   const { closeModal } = useUI();
 
@@ -39,8 +38,7 @@ const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   );
 };
 
-const option: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
-  const { symbol, origin } = props;
+const item: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
   const { setFromToken, setIntoToken, fromToken, intoToken } = useToken();
   const { closeModal } = useUI();
 
@@ -55,11 +53,11 @@ const option: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
     <Fragment key={symbol}>
       <li
         onClick={handleSelect}
-        className={cn(s.option, {
+        className={cn(s.item, {
           [s.selected]: selected,
         })}
       >
-        <div className={s.option__inner}>
+        <div className={s.item__inner}>
           {symbol}
           {selected && <AiOutlineCheck className={s.icon} />}
         </div>
@@ -91,7 +89,7 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = ({ origin }) => {
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
-    const results = Object.keys(tokenList).filter((symbol) => search === symbol);
+    const results = Object.keys(tokenList).filter((symbol) => symbol.indexOf(search) > -1);
     setResults(results);
   }, [search]);
 
@@ -120,10 +118,10 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = ({ origin }) => {
           <ul className={s.tags}>{history.slice(0, 7).map((symbol) => tag({ symbol, origin }))}</ul>
         </div>
         <div className={s.section}>
-          <ul className={s.options}>
+          <ul className={s.items}>
             {showResults
-              ? results.map((symbol) => option({ symbol, origin }))
-              : Object.keys(tokenList).map((symbol) => option({ symbol, origin }))}
+              ? results.map((symbol) => item({ symbol, origin }))
+              : Object.keys(tokenList).map((symbol) => item({ symbol, origin }))}
           </ul>
         </div>
       </div>

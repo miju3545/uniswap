@@ -1,4 +1,3 @@
-import { AnyOBJ } from '@lib/types';
 import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext } from 'react';
 
 export type State = {
