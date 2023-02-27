@@ -37,11 +37,11 @@ uniswap
    │  └─ _layout.tsx
    │  └─ swap.tsx
    ├─ lib
-   │  └─ hooks
-   │    └─ useCurrencies.tsx
-   │    └─ useGetDetailsOfTokensByIds
-   │  └─ updateHistory.ts
-   │  └─ types.ts
+   │  ├─ hooks
+   │  │  └─ useCurrencies.tsx
+   │  │  └─ useGetDetailsOfTokensByIds.tsx
+   │  ├─ types.ts
+   │  ├─ updateHistory.ts
    │  └─ queryClient.ts
    └─ config
       └─ token-list.ts
