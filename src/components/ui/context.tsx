@@ -34,8 +34,8 @@ export type Action =
     };
 
 export type MODAL_VIEWS = 'SELECT_TOKEN_VIEW';
+export type MODAL_VIEWS_PROPS = { origin: ORIGINS };
 export type ORIGINS = 'from' | 'into';
-export type MODAL_VIEWS_PROPS = { origin: ORIGINS } | AnyOBJ;
 
 export const UIContext = createContext<ReturnState | null>(null);
 
