@@ -44,7 +44,7 @@ export const TokenContext = createContext<ReturnState | null>(null);
 
 TokenContext.displayName = 'TokenContext';
 
-const stayUnique = (values: string[]) => Array.from(new Set([...values]));
+const stayUnique = (values: string[]): string[] => Array.from(new Set(values));
 
 function tokenReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -64,7 +64,7 @@ function tokenReducer(state: State, action: Action): State {
 
       return {
         ...state,
-        intoToken: { ...state.fromToken, symbol: action.symbol, id: tokenList[action.symbol].id },
+        intoToken: { ...state.intoToken, symbol: action.symbol, id: tokenList[action.symbol].id },
         history,
       };
     }
