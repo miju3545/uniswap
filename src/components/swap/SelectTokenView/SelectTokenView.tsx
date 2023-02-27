@@ -68,9 +68,7 @@ const option: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   );
 };
 
-const SelectTokenView: FC<MODAL_VIEWS_PROPS> = (props) => {
-  const { origin } = props;
-
+const SelectTokenView: FC<MODAL_VIEWS_PROPS> = ({ origin }) => {
   const schema = yup.object({
     search: yup.string().required(''),
   });
@@ -88,10 +86,9 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = (props) => {
   const { closeModal } = useUI();
   const { history } = useToken();
 
+  const { search } = watch();
   const [results, setResults] = useState<string[]>([]);
-  const [showResult, setShowResult] = useState(false);
-
-  const search = watch().search;
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     const results = Object.keys(tokenList).filter((symbol) => search === symbol);
@@ -99,7 +96,7 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = (props) => {
   }, [search]);
 
   useEffect(() => {
-    setShowResult(isDirty);
+    setShowResults(isDirty);
   }, [isDirty]);
 
   useEffect(() => {
@@ -120,15 +117,11 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = (props) => {
           <Input name={'search'} control={control} className={s.input} placeholder="이름 검색 또는 주소 넣기" />
         </div>
         <div className={s.section}>
-          <ul className={s.tags}>
-            {history.slice(0, 7).map((symbol) => {
-              return tag({ symbol, origin });
-            })}
-          </ul>
+          <ul className={s.tags}>{history.slice(0, 7).map((symbol) => tag({ symbol, origin }))}</ul>
         </div>
         <div className={s.section}>
           <ul className={s.options}>
-            {showResult
+            {showResults
               ? results.map((symbol) => option({ symbol, origin }))
               : Object.keys(tokenList).map((symbol) => option({ symbol, origin }))}
           </ul>
