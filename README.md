@@ -7,7 +7,7 @@
 > yarn start # http://localhost:3000
 ```
 
-## 🚨Error
+## 🚨 ~~_Error_~~
 
 - ~~_input의 onChange props에 전달된 함수의 매개변수가 이전값을 참조해서 계속 반영되지 않는 문제 발견.._~~
 - (**문제 해결** - event 객체에서 직접 값 추출하는 방식으로 접근.)
