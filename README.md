@@ -47,6 +47,7 @@ uniswap
    │    └─ useGetDetailsOfTokensByIds
    │  └─ updateHistory.ts
    │  └─ types.ts
+   │  └─ queryClient.ts
    └─ config
       └─ token-list.ts
 ```
