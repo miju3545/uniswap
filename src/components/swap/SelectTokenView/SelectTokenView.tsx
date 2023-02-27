@@ -4,7 +4,7 @@ import s from './SelectTokenView.module.css';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { TfiClose } from 'react-icons/tfi';
-import { ORIGINS, useUI } from '../../ui/context';
+import { MODAL_VIEWS_PROPS, ORIGINS, useUI } from '../../ui/context';
 import { Input } from '@components/ui';
 import { BiSearch } from 'react-icons/bi';
 import { useToken } from '@components/swap/context';
@@ -69,11 +69,7 @@ const option: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   );
 };
 
-const SelectTokenView: FC<
-  AnyOBJ & {
-    origin: ORIGINS;
-  }
-> = (props) => {
+const SelectTokenView: FC<MODAL_VIEWS_PROPS> = (props) => {
   const { origin } = props;
 
   const schema = yup.object({

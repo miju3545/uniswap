@@ -4,13 +4,13 @@ import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext }
 export type State = {
   displayModal: boolean;
   modalView: MODAL_VIEWS;
-  props: AnyOBJ & { origin: ORIGINS };
+  props: MODAL_VIEWS_PROPS;
 };
 
 export type ReturnState = State & {
   openModal: () => void;
   closeModal: () => void;
-  setModalView: ({ modalView, props }: { modalView: MODAL_VIEWS; props: AnyOBJ & { origin: ORIGINS } }) => void;
+  setModalView: ({ modalView, props }: { modalView: MODAL_VIEWS; props: MODAL_VIEWS_PROPS }) => void;
 };
 
 const initialState: State = {
@@ -30,11 +30,12 @@ export type Action =
     }
   | {
       type: 'SET_MODAL_VIEW';
-      data: { modalView: MODAL_VIEWS; props: AnyOBJ & { origin: ORIGINS } };
+      data: { modalView: MODAL_VIEWS; props: MODAL_VIEWS_PROPS };
     };
 
 export type MODAL_VIEWS = 'SELECT_TOKEN_VIEW';
 export type ORIGINS = 'from' | 'into';
+export type MODAL_VIEWS_PROPS = { origin: ORIGINS } | AnyOBJ;
 
 export const UIContext = createContext<ReturnState | null>(null);
 
@@ -76,8 +77,7 @@ export const UIProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const closeModal = useCallback(() => dispatch({ type: 'CLOSE_MODAL' }), [dispatch]);
 
   const setModalView = useCallback(
-    (data: { modalView: MODAL_VIEWS; props: AnyOBJ & { origin: ORIGINS } }) =>
-      dispatch({ type: 'SET_MODAL_VIEW', data }),
+    (data: { modalView: MODAL_VIEWS; props: MODAL_VIEWS_PROPS }) => dispatch({ type: 'SET_MODAL_VIEW', data }),
     [dispatch]
   );
 

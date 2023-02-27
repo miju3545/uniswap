@@ -7,6 +7,7 @@ import { SwapTokenProvider } from '@components/swap/context';
 
 const ModalView: React.FC<{ modalView: string; closeModal: () => void }> = ({ modalView, closeModal }) => {
   const { props } = useUI();
+
   return <Modal onClose={closeModal}>{modalView === 'SELECT_TOKEN_VIEW' && <SelectTokenView {...props} />}</Modal>;
 };
 
