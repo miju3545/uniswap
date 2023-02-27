@@ -1,11 +1,11 @@
 import React, { FC, InputHTMLAttributes, ChangeEvent } from 'react';
-import { digitsOnly, FormValues } from '@components/swap/SwapTokenView/SwapTokenView';
+import { digitsOnly, Form } from '@components/swap/SwapTokenView/SwapTokenView';
 import { Control, Controller } from 'react-hook-form';
 
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'number' | 'text';
   name: string;
-  control: Control<FormValues | any>;
+  control: Control<Form | any>;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 

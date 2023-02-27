@@ -12,13 +12,13 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from '@components/ui';
 
-export type FormValues = {
+export type Form = {
   from: string | number;
   into: string | number;
 };
 
 export const trimDigit = (digit: number | string, fraction: number | undefined = 10) => {
-  const str = digit.toLocaleString(undefined, { minimumFractionDigits: fraction, maximumFractionDigits: fraction });
+  const str = digit.toLocaleString(undefined, { maximumFractionDigits: fraction });
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
 
@@ -30,7 +30,7 @@ const TokenView: FC = () => {
     into: yup.string().test('validation', 'digits only field', digitsOnly),
   });
 
-  const { control, handleSubmit, setFocus, setValue, watch } = useForm<FormValues>({
+  const { control, handleSubmit, setFocus, setValue, watch } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
   });
