@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query';
-import { AnyOBJ } from './typings';
+import { AnyOBJ } from './types';
 
 export const getClient = (() => {
   let client: QueryClient | null = null;

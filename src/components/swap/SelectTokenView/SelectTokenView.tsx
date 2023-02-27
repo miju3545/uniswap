@@ -12,7 +12,6 @@ import tokenList from '../../../config/token-list';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AnyOBJ } from '@lib/typings';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   const { symbol, origin } = props;
