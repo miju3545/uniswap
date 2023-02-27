@@ -4,11 +4,12 @@ export const updateHistory = (history: string[]) => {
   localStorage.setItem(KEY, JSON.stringify(history));
 };
 
-export const getHistory = (() => {
-  let history = localStorage.getItem(KEY);
+const getHistory = (): string | null => {
+  return localStorage.getItem(KEY);
+};
 
-  return (defaultHistory: string[]) => {
-    if (!history) updateHistory(defaultHistory);
-    return JSON.parse(history ?? '[]');
-  };
-})();
+export const manageHistory = (defaultHistory: string[]) => {
+  if (!getHistory()) updateHistory(defaultHistory);
+
+  return JSON.parse(getHistory() ?? '[]');
+};

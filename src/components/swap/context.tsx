@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext } from 'react';
 import tokenList from '../../config/token-list';
-import { getHistory, updateHistory } from '../../lib/updateHistory';
+import { manageHistory, updateHistory } from '../../lib/updateHistory';
 
 type Token = {
   id: string;
@@ -27,7 +27,7 @@ const initialState: State = {
     id: tokenList['USDT'].id,
     symbol: 'USDT',
   },
-  history: getHistory(['ETH', 'USDT']),
+  history: manageHistory(['ETH', 'USDT']),
 };
 
 export type Action =
@@ -44,10 +44,12 @@ export const TokenContext = createContext<ReturnState | null>(null);
 
 TokenContext.displayName = 'TokenContext';
 
+const stayUnique = (values: string[]) => Array.from(new Set([...values]));
+
 function tokenReducer(state: State, action: Action): State {
   switch (action.type) {
     case 'SET_FROM_TOKEN': {
-      const history = Array.from(new Set([...state.history, action.symbol]));
+      const history = stayUnique([...state.history, action.symbol]);
       updateHistory(history);
 
       return {
@@ -57,7 +59,7 @@ function tokenReducer(state: State, action: Action): State {
       };
     }
     case 'SET_INTO_TOKEN': {
-      const history = Array.from(new Set([...state.history, action.symbol]));
+      const history = stayUnique([...state.history, action.symbol]);
       updateHistory(history);
 
       return {

@@ -115,13 +115,7 @@ const SelectTokenView: FC = () => {
       <div className={s.container}>
         <div className={s.search}>
           <BiSearch className={s.icon} />
-          <Input
-            type="text"
-            name={'search'}
-            control={control}
-            className={s.input}
-            placeholder="이름 검색 또는 주소 넣기"
-          />
+          <Input name={'search'} control={control} className={s.input} placeholder="이름 검색 또는 주소 넣기" />
         </div>
         <div className={s.section}>
           <ul className={s.tags}>
