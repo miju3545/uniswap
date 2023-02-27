@@ -1,21 +1,24 @@
+import { AnyOBJ } from '@lib/typings';
 import React, { FC, ReactNode, createContext, useCallback, useMemo, useContext } from 'react';
 
 export type State = {
   displayModal: boolean;
   modalView: MODAL_VIEWS;
-  origin: ORIGINS;
+  props: AnyOBJ & { origin: ORIGINS };
 };
 
 export type ReturnState = State & {
   openModal: () => void;
   closeModal: () => void;
-  setModalView: ({ modalView, origin }: { modalView: MODAL_VIEWS; origin: ORIGINS }) => void;
+  setModalView: ({ modalView, props }: { modalView: MODAL_VIEWS; props: AnyOBJ & { origin: ORIGINS } }) => void;
 };
 
 const initialState: State = {
   displayModal: false,
   modalView: 'SELECT_TOKEN_VIEW',
-  origin: 'from',
+  props: {
+    origin: 'from',
+  },
 };
 
 export type Action =
@@ -27,7 +30,7 @@ export type Action =
     }
   | {
       type: 'SET_MODAL_VIEW';
-      data: { modalView: MODAL_VIEWS; origin: ORIGINS };
+      data: { modalView: MODAL_VIEWS; props: AnyOBJ & { origin: ORIGINS } };
     };
 
 export type MODAL_VIEWS = 'SELECT_TOKEN_VIEW';
@@ -52,12 +55,12 @@ function uiReducer(state: State, action: Action): State {
       };
     }
     case 'SET_MODAL_VIEW': {
-      const { modalView, origin } = action.data;
+      const { modalView, props } = action.data;
 
       return {
         ...state,
         modalView,
-        origin,
+        props,
       };
     }
     default: {
@@ -73,7 +76,8 @@ export const UIProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const closeModal = useCallback(() => dispatch({ type: 'CLOSE_MODAL' }), [dispatch]);
 
   const setModalView = useCallback(
-    (data: { modalView: MODAL_VIEWS; origin: ORIGINS }) => dispatch({ type: 'SET_MODAL_VIEW', data }),
+    (data: { modalView: MODAL_VIEWS; props: AnyOBJ & { origin: ORIGINS } }) =>
+      dispatch({ type: 'SET_MODAL_VIEW', data }),
     [dispatch]
   );
 

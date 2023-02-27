@@ -52,7 +52,7 @@ const TokenView: FC = () => {
 
   const handleSelect = (origin: ORIGINS) => {
     openModal();
-    setModalView({ modalView: 'SELECT_TOKEN_VIEW', origin });
+    setModalView({ modalView: 'SELECT_TOKEN_VIEW', props: { origin } });
   };
 
   useEffect(() => {

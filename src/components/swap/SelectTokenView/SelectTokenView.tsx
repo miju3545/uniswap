@@ -12,6 +12,7 @@ import tokenList from '../../../config/token-list';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AnyOBJ } from '@lib/typings';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   const { symbol, origin } = props;
@@ -68,7 +69,13 @@ const option: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   );
 };
 
-const SelectTokenView: FC = () => {
+const SelectTokenView: FC<
+  AnyOBJ & {
+    origin: ORIGINS;
+  }
+> = (props) => {
+  const { origin } = props;
+
   const schema = yup.object({
     search: yup.string().required(''),
   });
@@ -83,7 +90,7 @@ const SelectTokenView: FC = () => {
     defaultValues: { search: '' },
   });
 
-  const { closeModal, origin } = useUI();
+  const { closeModal } = useUI();
   const { history } = useToken();
 
   const [results, setResults] = useState<string[]>([]);
