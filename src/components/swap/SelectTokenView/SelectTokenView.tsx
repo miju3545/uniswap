@@ -11,6 +11,7 @@ import { useToken } from '@components/swap/context';
 import tokenList from '../../../config/token-list';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = (props) => {
   const { symbol, origin } = props;
@@ -78,6 +79,7 @@ const SelectTokenView: FC = () => {
     watch,
     formState: { isDirty },
   } = useForm<{ search: string }>({
+    resolver: yupResolver(schema),
     defaultValues: { search: '' },
   });
 

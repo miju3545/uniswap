@@ -90,7 +90,6 @@ const TokenView: FC = () => {
               <div className={s.swap_currency_input}>
                 <div className={s.input_wrapper}>
                   <Input
-                    autoFocus
                     type="number"
                     id={fromToken.symbol}
                     name={'from'}
