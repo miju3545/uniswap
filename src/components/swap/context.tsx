@@ -40,9 +40,9 @@ export type Action =
       symbol: string;
     };
 
-export const TokenContext = createContext<ReturnState | null>(null);
+export const SwapTokenContext = createContext<ReturnState | null>(null);
 
-TokenContext.displayName = 'TokenContext';
+SwapTokenContext.displayName = 'SwapTokenContext';
 
 const stayUnique = (values: string[]): string[] => Array.from(new Set(values));
 
@@ -90,11 +90,11 @@ export const SwapTokenProvider: FC<{ children: ReactNode }> = ({ children }) => 
     [state]
   );
 
-  return <TokenContext.Provider value={value}>{children}</TokenContext.Provider>;
+  return <SwapTokenContext.Provider value={value}>{children}</SwapTokenContext.Provider>;
 };
 
-export const useToken = () => {
-  const context = useContext(TokenContext);
+export const useSwapToken = () => {
+  const context = useContext(SwapTokenContext);
   if (!context) {
     throw new Error(`useToken는 TokenProvider에서만 사용할 수 있음!`);
   }

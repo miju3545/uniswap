@@ -6,13 +6,13 @@ import { TfiClose } from 'react-icons/tfi';
 import { MODAL_VIEWS_PROPS, ORIGINS, useUI } from '../../ui/context';
 import { Input } from '@components/ui';
 import { BiSearch } from 'react-icons/bi';
-import { useToken } from '@components/swap/context';
+import { useSwapToken } from '@components/swap/context';
 import tokenList from '../../../config/token-list';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
-  const { setFrom, setInto, from, into } = useToken();
+  const { setFrom, setInto, from, into } = useSwapToken();
   const { closeModal } = useUI();
 
   const selected = origin === 'from' ? symbol === from.symbol : symbol === into.symbol;
@@ -37,7 +37,7 @@ const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
 };
 
 const item: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
-  const { setFrom, setInto, from, into } = useToken();
+  const { setFrom, setInto, from, into } = useSwapToken();
   const { closeModal } = useUI();
 
   const selected = origin === 'from' ? symbol === from.symbol : symbol === into.symbol;
@@ -75,7 +75,7 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = ({ origin }) => {
   });
 
   const { closeModal } = useUI();
-  const { history } = useToken();
+  const { history } = useSwapToken();
   const { search } = watch();
   const [results, setResults] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);

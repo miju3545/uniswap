@@ -3,7 +3,7 @@ import s from './SwapTokenView.module.css';
 import { ORIGINS, useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
 import useGetDetailsOfTokensByIds from '@lib/hooks/useGetDetailsOfTokensByIds';
-import { useToken } from '../context';
+import { useSwapToken } from '../context';
 import useCurrencies, { currencyFormatter } from '@lib/hooks/useCurrencies';
 import { useForm } from 'react-hook-form';
 import { Input } from '@components/ui';
@@ -29,7 +29,7 @@ const TokenView: FC = () => {
   const { openModal, setModalView } = useUI();
   const [disabled, setDisabled] = useState(true);
 
-  const { from: fromToken, into: intoToken } = useToken();
+  const { from: fromToken, into: intoToken } = useSwapToken();
   const [fromDetail, intoDetail] = useGetDetailsOfTokensByIds(fromToken.id, intoToken.id);
 
   const fromPrice = fromDetail?.data?.[fromToken.id]?.usd || 0;
