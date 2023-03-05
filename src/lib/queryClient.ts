@@ -35,7 +35,7 @@ export const fetcher = async ({
   body?: AnyOBJ;
   params?: AnyOBJ;
 }) => {
-  let url = `${BASE_URL}`;
+  let url = BASE_URL;
 
   const options: RequestInit = {
     method,
@@ -64,5 +64,5 @@ export const fetcher = async ({
 };
 
 export const QueryKeys = {
-  TOKEN_USD: 'TOKEN_USD',
+  TOKEN_INFO: 'TOKEN_INFO',
 };

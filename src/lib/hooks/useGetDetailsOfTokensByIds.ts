@@ -9,7 +9,9 @@ const fetchTokenById = async (id: string) => {
 };
 
 const useGetDetailsOfTokensByIds = (...ids: string[]) => {
-  return useQueries(ids.map((id: string) => ({ queryKey: [QueryKeys, id], queryFn: () => fetchTokenById(id) })));
+  return useQueries(
+    ids.map((id: string) => ({ queryKey: [QueryKeys.TOKEN_INFO, id], queryFn: () => fetchTokenById(id) }))
+  );
 };
 
 export default useGetDetailsOfTokensByIds;
