@@ -30,7 +30,7 @@ export const fetcher = async ({
   body,
   params,
 }: {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   path?: string;
   body?: AnyOBJ;
   params?: AnyOBJ;
@@ -60,6 +60,7 @@ export const fetcher = async ({
     return json;
   } catch (error) {
     console.error(error);
+    return error;
   }
 };
 

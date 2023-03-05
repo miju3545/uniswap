@@ -4,33 +4,31 @@ import { ORIGINS, useUI } from '../../ui/context';
 import Button from '@components/ui/Button';
 import useGetDetailsOfTokensByIds from '@lib/hooks/useGetDetailsOfTokensByIds';
 import { useToken } from '../context';
-import { IoSettingsOutline } from 'react-icons/io5';
-import { BiInfoCircle } from 'react-icons/bi';
 import useCurrencies, { currencyFormatter } from '@lib/hooks/useCurrencies';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from '@components/ui';
+import * as yup from 'yup';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { BiInfoCircle } from 'react-icons/bi';
 
 export type Form = {
   from: string | number;
   into: string | number;
 };
 
-export const trimDigits = (digit: number | string, fraction: number | undefined = 10) => {
+export const trimDigits = (digit: number | string, fraction?: number) => {
   const str = digit.toLocaleString(undefined, { maximumFractionDigits: fraction });
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
 
-export const digitsOnly = (value: string = '') => /(^\d+$)|(^\d{1,}.\d{0,10}$)/.test(value) || value.length === 0;
-
 const TokenView: FC = () => {
-  const schema = yup.object().shape({
-    from: yup.string().test('validation', 'digits only field', digitsOnly),
-    into: yup.string().test('validation', 'digits only field', digitsOnly),
+  const schema = yup.object({
+    from: yup.string(),
+    into: yup.string(),
   });
 
-  const { control, handleSubmit, setFocus, setValue, watch } = useForm<Form>({
+  const { control, setFocus, setValue, watch } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
   });
@@ -84,14 +82,13 @@ const TokenView: FC = () => {
         </button>
       </div>
       <div className={s.container}>
-        <form onSubmit={handleSubmit(() => {})}>
+        <form>
           <div className={s.section}>
             <div className={s.section__group}>
               <div className={s.swap_currency_input}>
                 <div className={s.input_wrapper}>
                   <Input
                     type="number"
-                    id={fromToken.symbol}
                     name={'from'}
                     control={control}
                     className={s.input}
@@ -111,9 +108,7 @@ const TokenView: FC = () => {
                 <div className={s.input_wrapper}>
                   <Input
                     type="number"
-                    id={intoToken.symbol}
                     name={'into'}
-                    value={intoAmount}
                     control={control}
                     className={s.input}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
