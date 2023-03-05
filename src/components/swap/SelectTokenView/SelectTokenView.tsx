@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
-import cn from 'clsx';
 import s from './SelectTokenView.module.css';
+import cn from 'clsx';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { TfiClose } from 'react-icons/tfi';
@@ -14,15 +14,15 @@ import { RiEditBoxLine } from 'react-icons/ri';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
-  const { setFromToken, setIntoToken, fromToken, intoToken } = useToken();
+  const { setFrom, setInto, from, into } = useToken();
   const { closeModal } = useUI();
 
+  const selected = origin === 'from' ? symbol === from.symbol : symbol === into.symbol;
+
   const handleSelect = () => {
-    origin === 'from' ? setFromToken(symbol) : setIntoToken(symbol);
+    origin === 'from' ? setFrom(symbol) : setInto(symbol);
     closeModal();
   };
-
-  const selected = origin === 'from' ? symbol === fromToken.symbol : symbol === intoToken.symbol;
 
   return (
     <Fragment key={symbol}>
@@ -39,13 +39,13 @@ const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
 };
 
 const item: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
-  const { setFromToken, setIntoToken, fromToken, intoToken } = useToken();
+  const { setFrom, setInto, from, into } = useToken();
   const { closeModal } = useUI();
 
-  const selected = origin === 'from' ? symbol === fromToken.symbol : symbol === intoToken.symbol;
+  const selected = origin === 'from' ? symbol === from.symbol : symbol === into.symbol;
 
   const handleSelect = () => {
-    origin === 'from' ? setFromToken(symbol) : setIntoToken(symbol);
+    origin === 'from' ? setFrom(symbol) : setInto(symbol);
     closeModal();
   };
 
@@ -83,7 +83,6 @@ const SelectTokenView: FC<MODAL_VIEWS_PROPS> = ({ origin }) => {
 
   const { closeModal } = useUI();
   const { history } = useToken();
-
   const { search } = watch();
   const [results, setResults] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);

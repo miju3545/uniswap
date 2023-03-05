@@ -8,22 +8,22 @@ type Token = {
 };
 
 export type State = {
-  fromToken: Token;
-  intoToken: Token;
+  from: Token;
+  into: Token;
   history: string[];
 };
 
 export type ReturnState = State & {
-  setFromToken: (symbol: string) => void;
-  setIntoToken: (symbol: string) => void;
+  setFrom: (symbol: string) => void;
+  setInto: (symbol: string) => void;
 };
 
 const initialState: State = {
-  fromToken: {
+  from: {
     id: tokenList['ETH'].id,
     symbol: 'ETH',
   },
-  intoToken: {
+  into: {
     id: tokenList['USDT'].id,
     symbol: 'USDT',
   },
@@ -32,11 +32,11 @@ const initialState: State = {
 
 export type Action =
   | {
-      type: 'SET_FROM_TOKEN';
+      type: 'SET_FROM';
       symbol: string;
     }
   | {
-      type: 'SET_INTO_TOKEN';
+      type: 'SET_INTO';
       symbol: string;
     };
 
@@ -48,23 +48,23 @@ const stayUnique = (values: string[]): string[] => Array.from(new Set(values));
 
 function tokenReducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'SET_FROM_TOKEN': {
+    case 'SET_FROM': {
       const history = stayUnique([...state.history, action.symbol]);
       updateHistory(history);
 
       return {
         ...state,
-        fromToken: { ...state.fromToken, symbol: action.symbol, id: tokenList[action.symbol].id },
+        from: { ...state.from, symbol: action.symbol, id: tokenList[action.symbol].id },
         history,
       };
     }
-    case 'SET_INTO_TOKEN': {
+    case 'SET_INTO': {
       const history = stayUnique([...state.history, action.symbol]);
       updateHistory(history);
 
       return {
         ...state,
-        intoToken: { ...state.intoToken, symbol: action.symbol, id: tokenList[action.symbol].id },
+        into: { ...state.into, symbol: action.symbol, id: tokenList[action.symbol].id },
         history,
       };
     }
@@ -78,14 +78,14 @@ function tokenReducer(state: State, action: Action): State {
 export const SwapTokenProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = React.useReducer(tokenReducer, initialState);
 
-  const setFromToken = useCallback((symbol: string) => dispatch({ type: 'SET_FROM_TOKEN', symbol }), [dispatch]);
-  const setIntoToken = useCallback((symbol: string) => dispatch({ type: 'SET_INTO_TOKEN', symbol }), [dispatch]);
+  const setFrom = useCallback((symbol: string) => dispatch({ type: 'SET_FROM', symbol }), [dispatch]);
+  const setInto = useCallback((symbol: string) => dispatch({ type: 'SET_INTO', symbol }), [dispatch]);
 
   const value: ReturnState = useMemo(
     () => ({
       ...state,
-      setFromToken,
-      setIntoToken,
+      setFrom,
+      setInto,
     }),
     [state]
   );

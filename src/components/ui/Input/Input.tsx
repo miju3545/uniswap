@@ -10,7 +10,7 @@ export type Props = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input: FC<Props> = (props) => {
-  const { id, type = 'text', value, name, control, onChange = () => {}, ...rest } = props;
+  const { type = 'text', value, name, control, onChange = () => {}, ...rest } = props;
 
   return (
     <label>
@@ -20,7 +20,6 @@ const Input: FC<Props> = (props) => {
         render={({ field }) => (
           <input
             type={type}
-            data-id={id}
             autoComplete="off"
             autoCorrect="true"
             autoCapitalize="off"

@@ -17,7 +17,7 @@ export type Form = {
   into: string | number;
 };
 
-export const trimDigit = (digit: number | string, fraction: number | undefined = 10) => {
+export const trimDigits = (digit: number | string, fraction: number | undefined = 10) => {
   const str = digit.toLocaleString(undefined, { maximumFractionDigits: fraction });
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
@@ -38,7 +38,7 @@ const TokenView: FC = () => {
   const { openModal, setModalView } = useUI();
   const [disabled, setDisabled] = useState(true);
 
-  const { fromToken, intoToken } = useToken();
+  const { from: fromToken, into: intoToken } = useToken();
   const [fromDetail, intoDetail] = useGetDetailsOfTokensByIds(fromToken.id, intoToken.id);
 
   const fromPrice = fromDetail?.data?.[fromToken.id]?.usd || 0;
@@ -65,13 +65,13 @@ const TokenView: FC = () => {
 
   useEffect(() => {
     if (fromAmount) {
-      setValue('into', trimDigit((fromAmount * fromPrice) / intoPrice));
+      setValue('into', trimDigits((fromAmount * fromPrice) / intoPrice));
     }
   }, [fromPrice]);
 
   useEffect(() => {
     if (intoAmount) {
-      setValue('from', trimDigit((intoAmount * intoPrice) / fromPrice));
+      setValue('from', trimDigits((intoAmount * intoPrice) / fromPrice));
     }
   }, [intoPrice]);
 
@@ -96,7 +96,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setValue('into', trimDigit((+e.target.value * fromPrice) / intoPrice));
+                      setValue('into', trimDigits((+e.target.value * fromPrice) / intoPrice));
                     }}
                   />
                   <p className={s.result}>{fromCurrency}</p>
@@ -117,7 +117,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setValue('from', trimDigit((+e.target.value * intoPrice) / fromPrice));
+                      setValue('from', trimDigits((+e.target.value * intoPrice) / fromPrice));
                     }}
                   />
                   <p className={s.result}>{intoCurrency}</p>
@@ -129,7 +129,7 @@ const TokenView: FC = () => {
             </div>
             <div className={s.section__group}>
               <div className={s.info}>
-                <BiInfoCircle /> 1 {intoToken.symbol} = {trimDigit(intoPrice / fromPrice, 7)} {` `}
+                <BiInfoCircle /> 1 {intoToken.symbol} = {trimDigits(intoPrice / fromPrice, 7)} {` `}
                 {fromToken.symbol} ({currencyFormatter({ amount: intoPrice, fraction: 4 })})
               </div>
             </div>
