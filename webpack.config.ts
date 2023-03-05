@@ -5,11 +5,11 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 
+const isDevMode = process.env.NODE_ENV !== 'production';
+
 type Configuration = WebpackConfiguration & {
   devServer: WebpackDevServerConfiguration;
 };
-
-const isDevMode = process.env.NODE_ENV !== 'production';
 
 const config: Configuration = {
   name: 'uniswap',
@@ -81,7 +81,9 @@ const config: Configuration = {
 };
 
 if (isDevMode && config.plugins) {
-  [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()].forEach((v) => config.plugins?.push(v));
+  [webpack.HotModuleReplacementPlugin, ReactRefreshWebpackPlugin].forEach((Plugin) =>
+    config.plugins?.push(new Plugin())
+  );
 }
 
 export default config;
