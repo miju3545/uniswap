@@ -7,7 +7,6 @@ import { useToken } from '../context';
 import useCurrencies, { currencyFormatter } from '@lib/hooks/useCurrencies';
 import { useForm } from 'react-hook-form';
 import { Input } from '@components/ui';
-import * as yup from 'yup';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { BiInfoCircle } from 'react-icons/bi';
 
