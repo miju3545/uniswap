@@ -9,11 +9,11 @@ type Configuration = WebpackConfiguration & {
   devServer: WebpackDevServerConfiguration;
 };
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isDevMode = process.env.NODE_ENV !== 'production';
 
 const config: Configuration = {
   name: 'uniswap',
-  mode: isDev ? 'development' : 'production',
+  mode: isDevMode ? 'development' : 'production',
   devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
@@ -48,7 +48,7 @@ const config: Configuration = {
           ],
           env: {
             development: {
-              plugins: [require.resolve('react-refresh/babel')],
+              plugins: [isDevMode && require.resolve('react-refresh/babel')].filter(Boolean),
             },
           },
         },
@@ -56,19 +56,7 @@ const config: Configuration = {
       },
       {
         test: /\.css?$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                localIdentName: '[hash:base64]',
-                auto: true,
-              },
-              sourceMap: true,
-            },
-          },
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
@@ -76,7 +64,7 @@ const config: Configuration = {
     new ForkTsCheckerWebpackPlugin({
       async: false,
     }),
-    new webpack.EnvironmentPlugin({ NODE_ENV: isDev ? 'development' : 'production' }),
+    new webpack.EnvironmentPlugin({ NODE_ENV: isDevMode ? 'development' : 'production' }),
     new MiniCssExtractPlugin({ filename: 'style.css' }),
   ],
   output: {
@@ -92,9 +80,8 @@ const config: Configuration = {
   },
 };
 
-if (isDev && config.plugins) {
-  config.plugins?.push(new webpack.HotModuleReplacementPlugin());
-  config.plugins?.push(new ReactRefreshWebpackPlugin());
+if (isDevMode && config.plugins) {
+  [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()].forEach((v) => config.plugins?.push(v));
 }
 
 export default config;
