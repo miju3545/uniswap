@@ -16,7 +16,7 @@
       "@pages/*": ["./pages/*"],
       "@lib/*": ["./lib/*"],
       "@hooks/*": ["./lib/hooks/*"],
-      "@typings/*": ["./lib/typings/*"]
+      "@config/*": ["./config/*"]
     }
   }
 }

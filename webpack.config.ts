@@ -1,29 +1,29 @@
-import path from 'path';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import webpack, { Configuration as WebpackConfiguration } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
-
-interface Configuration extends WebpackConfiguration {
-  devServer?: WebpackDevServerConfiguration;
-}
-
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path';
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+type Configuration = WebpackConfiguration & {
+  devServer: WebpackDevServerConfiguration;
+};
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 const config: Configuration = {
   name: 'uniswap',
-  mode: isDevelopment ? 'development' : 'production',
-  devtool: isDevelopment ? 'hidden-source-map' : 'inline-source-map',
+  mode: isDev ? 'development' : 'production',
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
       '@assets': path.resolve(__dirname, 'src/assets'),
-      '@hooks': path.resolve(__dirname, 'src/lib/hooks'),
       '@components': path.resolve(__dirname, 'src/components'),
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@lib': path.resolve(__dirname, 'src/lib'),
-      '@typings': path.resolve(__dirname, 'src/lib/typings'),
+      '@hooks': path.resolve(__dirname, 'src/lib/hooks'),
+      '@config': path.resolve(__dirname, 'src/config'),
     },
   },
   entry: {
@@ -40,7 +40,7 @@ const config: Configuration = {
               '@babel/preset-env',
               {
                 targets: { browsers: ['IE 10'] },
-                debug: isDevelopment,
+                debug: true,
               },
             ],
             '@babel/preset-react',
@@ -57,13 +57,13 @@ const config: Configuration = {
       {
         test: /\.css?$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: '[hash:base64]', // default
-                auto: true, // default
+                localIdentName: '[hash:base64]',
+                auto: true,
               },
               sourceMap: true,
             },
@@ -76,7 +76,8 @@ const config: Configuration = {
     new ForkTsCheckerWebpackPlugin({
       async: false,
     }),
-    new webpack.EnvironmentPlugin({ NODE_ENV: isDevelopment ? 'development' : 'production' }),
+    new webpack.EnvironmentPlugin({ NODE_ENV: isDev ? 'development' : 'production' }),
+    new MiniCssExtractPlugin({ filename: 'style.css' }),
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -91,17 +92,9 @@ const config: Configuration = {
   },
 };
 
-if (isDevelopment && config.plugins) {
-  config.plugins.push(new webpack.HotModuleReplacementPlugin());
-  config.plugins.push(
-    new ReactRefreshWebpackPlugin({
-      overlay: {
-        useURLPolyfill: true,
-      },
-    })
-  );
-}
-if (!isDevelopment && config.plugins) {
+if (isDev && config.plugins) {
+  config.plugins?.push(new webpack.HotModuleReplacementPlugin());
+  config.plugins?.push(new ReactRefreshWebpackPlugin());
 }
 
 export default config;
