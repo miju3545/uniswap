@@ -29,7 +29,7 @@ const TokenView: FC = () => {
   const { openModal, setModalView } = useUI();
   const [disabled, setDisabled] = useState(true);
 
-  const { from: fromToken, into: intoToken } = useSwapToken();
+  const { fromToken, intoToken } = useSwapToken();
   const [fromDetail, intoDetail] = useGetDetailsOfTokensByIds(fromToken.id, intoToken.id);
 
   const fromPrice = fromDetail?.data?.[fromToken.id]?.usd || 0;

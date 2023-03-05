@@ -12,13 +12,13 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
-  const { setFrom, setInto, from, into } = useSwapToken();
+  const { setFromToken, setIntoToken, fromToken, intoToken } = useSwapToken();
   const { closeModal } = useUI();
 
-  const selected = origin === 'from' ? symbol === from.symbol : symbol === into.symbol;
+  const selected = origin === 'from' ? symbol === fromToken.symbol : symbol === intoToken.symbol;
 
   const handleSelect = () => {
-    origin === 'from' ? setFrom(symbol) : setInto(symbol);
+    origin === 'from' ? setFromToken(symbol) : setIntoToken(symbol);
     closeModal();
   };
 
@@ -37,13 +37,13 @@ const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
 };
 
 const item: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
-  const { setFrom, setInto, from, into } = useSwapToken();
+  const { setFromToken, setIntoToken, fromToken, intoToken } = useSwapToken();
   const { closeModal } = useUI();
 
-  const selected = origin === 'from' ? symbol === from.symbol : symbol === into.symbol;
+  const selected = origin === 'from' ? symbol === fromToken.symbol : symbol === intoToken.symbol;
 
   const handleSelect = () => {
-    origin === 'from' ? setFrom(symbol) : setInto(symbol);
+    origin === 'from' ? setFromToken(symbol) : setIntoToken(symbol);
     closeModal();
   };
 

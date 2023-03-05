@@ -96,7 +96,7 @@ export const UIProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const useUI = () => {
   const context = useContext(UIContext);
   if (!context) {
-    throw new Error(`useUI는 UIProvider에서만 사용할 수 있음!`);
+    throw new Error(`useUI는 UIProvider 안에서만 사용할 수 있음!`);
   }
   return context;
 };
