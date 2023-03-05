@@ -17,13 +17,14 @@ export type Form = {
   into: string | number;
 };
 
-export const trimDigits = (digit: number | string, fraction?: number) => {
+// 소수점 아래 최대 n자리까지 제한
+export const limitDigits = (digit: number | string, fraction?: number) => {
   const str = digit.toLocaleString(undefined, { maximumFractionDigits: fraction });
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
 
 const TokenView: FC = () => {
-  const schema = yup.object({
+  const schema = yup.object().shape({
     from: yup.string(),
     into: yup.string(),
   });
@@ -53,6 +54,9 @@ const TokenView: FC = () => {
     setModalView({ modalView: 'SELECT_TOKEN_VIEW', props: { origin } });
   };
 
+  const handleInto = (digit: number) => setValue('into', limitDigits(digit));
+  const handleFrom = (digit: number) => setValue('from', limitDigits(digit));
+
   useEffect(() => {
     setFocus('from');
   }, []);
@@ -62,15 +66,11 @@ const TokenView: FC = () => {
   }, [fromAmount, intoAmount]);
 
   useEffect(() => {
-    if (fromAmount) {
-      setValue('into', trimDigits((fromAmount * fromPrice) / intoPrice));
-    }
+    if (fromAmount) handleInto((fromAmount * fromPrice) / intoPrice);
   }, [fromPrice]);
 
   useEffect(() => {
-    if (intoAmount) {
-      setValue('from', trimDigits((intoAmount * intoPrice) / fromPrice));
-    }
+    if (intoAmount) handleFrom((intoAmount * intoPrice) / fromPrice);
   }, [intoPrice]);
 
   return (
@@ -92,9 +92,9 @@ const TokenView: FC = () => {
                     name={'from'}
                     control={control}
                     className={s.input}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setValue('into', trimDigits((+e.target.value * fromPrice) / intoPrice));
-                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      handleInto((+e.target.value * fromPrice) / intoPrice)
+                    }
                   />
                   <p className={s.result}>{fromCurrency}</p>
                 </div>
@@ -111,9 +111,9 @@ const TokenView: FC = () => {
                     name={'into'}
                     control={control}
                     className={s.input}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      setValue('from', trimDigits((+e.target.value * intoPrice) / fromPrice));
-                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      handleFrom((+e.target.value * intoPrice) / fromPrice)
+                    }
                   />
                   <p className={s.result}>{intoCurrency}</p>
                 </div>
@@ -124,7 +124,7 @@ const TokenView: FC = () => {
             </div>
             <div className={s.section__group}>
               <div className={s.info}>
-                <BiInfoCircle /> 1 {intoToken.symbol} = {trimDigits(intoPrice / fromPrice, 7)} {` `}
+                <BiInfoCircle /> 1 {intoToken.symbol} = {limitDigits(intoPrice / fromPrice, 7)} {` `}
                 {fromToken.symbol} ({currencyFormatter({ amount: intoPrice, fraction: 4 })})
               </div>
             </div>
