@@ -6,7 +6,6 @@ import useGetDetailsOfTokensByIds from '@lib/hooks/useGetDetailsOfTokensByIds';
 import { useToken } from '../context';
 import useCurrencies, { currencyFormatter } from '@lib/hooks/useCurrencies';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from '@components/ui';
 import * as yup from 'yup';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -24,13 +23,7 @@ export const limitDigits = (digit: number | string, fraction?: number) => {
 };
 
 const TokenView: FC = () => {
-  const schema = yup.object().shape({
-    from: yup.string(),
-    into: yup.string(),
-  });
-
   const { control, setFocus, setValue, watch } = useForm<Form>({
-    resolver: yupResolver(schema),
     defaultValues: { from: 0, into: 0 },
   });
 
@@ -54,8 +47,8 @@ const TokenView: FC = () => {
     setModalView({ modalView: 'SELECT_TOKEN_VIEW', props: { origin } });
   };
 
-  const handleInto = (digit: number) => setValue('into', limitDigits(digit));
-  const handleFrom = (digit: number) => setValue('from', limitDigits(digit));
+  const handleFromAmount = (digit: number) => setValue('from', limitDigits(digit));
+  const handleIntoAmount = (digit: number) => setValue('into', limitDigits(digit));
 
   useEffect(() => {
     setFocus('from');
@@ -66,11 +59,11 @@ const TokenView: FC = () => {
   }, [fromAmount, intoAmount]);
 
   useEffect(() => {
-    if (fromAmount) handleInto((fromAmount * fromPrice) / intoPrice);
+    if (fromAmount) handleIntoAmount((fromAmount * fromPrice) / intoPrice);
   }, [fromPrice]);
 
   useEffect(() => {
-    if (intoAmount) handleFrom((intoAmount * intoPrice) / fromPrice);
+    if (intoAmount) handleFromAmount((intoAmount * intoPrice) / fromPrice);
   }, [intoPrice]);
 
   return (
@@ -93,7 +86,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      handleInto((+e.target.value * fromPrice) / intoPrice)
+                      handleIntoAmount((+e.target.value * fromPrice) / intoPrice)
                     }
                   />
                   <p className={s.result}>{fromCurrency}</p>
@@ -112,7 +105,7 @@ const TokenView: FC = () => {
                     control={control}
                     className={s.input}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      handleFrom((+e.target.value * intoPrice) / fromPrice)
+                      handleFromAmount((+e.target.value * intoPrice) / fromPrice)
                     }
                   />
                   <p className={s.result}>{intoCurrency}</p>

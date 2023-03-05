@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
 import s from './SelectTokenView.module.css';
 import cn from 'clsx';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { TfiClose } from 'react-icons/tfi';
 import { MODAL_VIEWS_PROPS, ORIGINS, useUI } from '../../ui/context';
@@ -11,7 +10,6 @@ import { useToken } from '@components/swap/context';
 import tokenList from '../../../config/token-list';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { RiEditBoxLine } from 'react-icons/ri';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 const tag: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
   const { setFrom, setInto, from, into } = useToken();
@@ -67,17 +65,12 @@ const item: FC<{ symbol: string; origin: ORIGINS }> = ({ symbol, origin }) => {
 };
 
 const SelectTokenView: FC<MODAL_VIEWS_PROPS> = ({ origin }) => {
-  const schema = yup.object({
-    search: yup.string().required(''),
-  });
-
   const {
     control,
     setFocus,
     watch,
     formState: { isDirty },
   } = useForm<{ search: string }>({
-    resolver: yupResolver(schema),
     defaultValues: { search: '' },
   });
 
