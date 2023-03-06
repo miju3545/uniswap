@@ -16,13 +16,12 @@ const config: Configuration = {
   mode: isDevMode ? 'development' : 'production',
   devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@components': path.resolve(__dirname, 'src/components'),
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@lib': path.resolve(__dirname, 'src/lib'),
-      '@hooks': path.resolve(__dirname, 'src/lib/hooks'),
       '@config': path.resolve(__dirname, 'src/config'),
     },
   },
@@ -35,17 +34,7 @@ const config: Configuration = {
         test: /\.tsx?$/,
         loader: 'babel-loader',
         options: {
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                targets: { browsers: ['IE 10'] },
-                debug: true,
-              },
-            ],
-            '@babel/preset-react',
-            '@babel/preset-typescript',
-          ],
+          presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
           env: {
             development: {
               plugins: [isDevMode && require.resolve('react-refresh/babel')].filter(Boolean),
@@ -81,9 +70,8 @@ const config: Configuration = {
 };
 
 if (isDevMode && config.plugins) {
-  [webpack.HotModuleReplacementPlugin, ReactRefreshWebpackPlugin].forEach((Plugin) =>
-    config.plugins?.push(new Plugin())
-  );
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+  config.plugins.push(new ReactRefreshWebpackPlugin());
 }
 
 export default config;

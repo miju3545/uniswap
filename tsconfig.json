@@ -15,7 +15,6 @@
       "@components/*": ["./components/*"],
       "@pages/*": ["./pages/*"],
       "@lib/*": ["./lib/*"],
-      "@hooks/*": ["./lib/hooks/*"],
       "@config/*": ["./config/*"]
     }
   }
