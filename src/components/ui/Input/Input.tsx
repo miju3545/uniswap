@@ -32,8 +32,8 @@ const Input: FC<Props> = (props) => {
               if (type === 'number' && !digitsOnly(e.target.value)) {
                 return;
               }
-              onChange(e);
               field.onChange(e.target.value);
+              onChange(e);
             }}
             {...rest}
           />

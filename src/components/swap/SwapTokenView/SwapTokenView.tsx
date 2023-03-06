@@ -21,7 +21,7 @@ export const limitDigits = (digit: number | string, fraction?: number) => {
   return parseFloat(str.replace(/[^0-9-.]/g, ''));
 };
 
-const TokenView: FC = () => {
+const SwapTokenView: FC = () => {
   const { control, setFocus, setValue, watch } = useForm<Form>({
     defaultValues: { from: 0, into: 0 },
   });
@@ -132,4 +132,4 @@ const TokenView: FC = () => {
   );
 };
 
-export default TokenView;
+export default SwapTokenView;

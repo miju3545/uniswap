@@ -33,13 +33,12 @@ export const fetcher = async ({
   body?: AnyOBJ;
   params?: AnyOBJ;
 }) => {
-  let url = BASE_URL;
+  let url = `${BASE_URL}${path ?? ''}`;
 
   const options: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:3000',
     },
   };
 
