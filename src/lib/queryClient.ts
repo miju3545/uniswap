@@ -9,11 +9,9 @@ export const getClient = (() => {
       client = new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: Infinity, // 얼마의 시간이 흐른 후 데이터를 stale 취급
-            cacheTime: Infinity, // 얼마의 시간동안 메모리에 있을 지
-            refetchOnMount: false,
-            refetchOnReconnect: false,
-            refetchOnWindowFocus: false,
+            staleTime: Infinity,
+            cacheTime: Infinity,
+            suspense: true,
           },
         },
       });
@@ -44,8 +42,6 @@ export const fetcher = async ({
       'Access-Control-Allow-Origin': 'http://localhost:3000',
     },
   };
-
-  if (path) url += path;
 
   if (params) {
     const searchParams = new URLSearchParams(params);
