@@ -46,7 +46,7 @@ uniswap
 
 ## 2. bundler
 
-- `webpack`
+- `webpack`: 직접 셋팅하기 (`webpack.config.ts`)
 
 ## 3. 상태 관리
 
